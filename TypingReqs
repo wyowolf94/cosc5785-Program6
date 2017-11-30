@@ -1,0 +1,62 @@
+Tests
+-----------------------------------------------------------------
+- There is one and only one main with return type void or int 
+  and has an empty paramlist and only implemented once
+- Main returns an int or nothing.
+
+Var Declarations:
+- The Type is an int or a class name
+- The Name hasn't been declared as a sibling
+
+Constructor Declarations:
+- No return statement or return is empty
+- Parameters are reachable
+- Accesses a parameter over a global variable
+- Not every class must have a constructor
+- Constructor must be named the same as the class
+
+Method Declarations:
+- The return statement matches the resultType
+- You cannot return void
+- If no return statement, it returns zero or null 
+- Parameters are reachable
+- Accesses a parameter over a global variable
+
+Parameter List:
+- Each parameter is an int or the type is a class name
+- No parameter name is used twice
+
+Local Var Declarations:
+- The Type is an int or a class name
+- The Name hasn't been declared as a sibling
+- The local var is accessed over a global var
+
+Statement:
+- Name has same type as Expression
+  + this => enclosing class
+  + identifier => declared variable
+  + dot => declared variable in appropriate class
+  + brackets => *-dimensional array with appropriate index (int)
+  + Array return types must be valid
+- Blocks enclose variable declarations
+- this is only used with dot op 
+
+Expression: 
+- ArgList has right number and types of parameters
+- ArgList parameters have been declared in the current scope
+- Operator expressions are ints
+- Relational ops return 1 if true and 0 if false
+- && and || only take 1 or 0
+- Eq operators can compare any type to null or only ints
+- null is a reference type to any class or array
+- read returns an int and takes no params
+- print returns void and takes 0 or more ints as parameters
+- Constructor methods can't be called without new
+
+New Expression:
+- Bracketed simple type expressions have right number of brackets 
+- Brackest can only contain ints or be empty
+- new allocates memory, calls constructor, and returns reference 
+  to object, even if default constructor is called.
+- Constructor parameters must match and rhs = lhs
+- Brackets containing an int can only be followed by one empty []

@@ -1,0 +1,148 @@
+// TestFileCorrect.decaf
+
+// Lex Error
+#include
+
+// One and only one main
+class one {
+  // Var type is int or class name
+  int a;
+  // Var name is not declared the same as a sibling
+  two b;
+  
+  // Main returns int or void and has an empty param list
+  int main() {
+    // Local var is accessed over global var
+    int b;
+    a = b;
+    
+    // Constructor methods can't be called w/o new
+    three c = new three();
+    // new returns a reference to an object 
+    this.b = c.minusb(b);
+    
+    // Main returns an int or nothing
+    return 0;
+  }
+  
+  void newTwo(int a, int b) {
+    // Parameters are reachable over globals
+    this.b = new two(a, b);
+    // No return statement is okay and can't return void
+  }
+  
+  void read_print() {
+    int c;
+    // read takes no params and returns an int
+    c = read();
+    // print takes 0 or more ints and returns void
+    return c.print(2,3,4,5);
+  }
+}
+
+class two {
+  // Type name is an int or a class
+  three a;
+  
+  // Constructor named same as the enclosing class
+  two(int a, int b) {
+    // Parameters are reachable and are accessed over globals
+    if(a == b) {
+      
+    }
+    
+    // If there is no return type, it returns default zero
+    if(this.a.minus() == 0) {
+      // Local variable not named the same as a sibling
+      int d;
+      int c;
+    }
+    
+    // If there is no return type, it returns default null
+    if(this.a.minusb(a) == null) {
+      // Type name is an int or a class name
+      two c;
+      int d;
+      // An identifier has been declared in appropriate class
+      this.a.minusb(b) = new two(a, b);
+    }
+    
+    // No Return Statement or return statement is empty
+    return;
+  }
+  
+  int[][] arrayMethod(two[][] twoArrray, three[][][] threeArray) {
+    int b;
+    int[][] a;
+    int[][][][] c;
+    
+    // Bracketed types must have the right number of brackets w/ ints
+    a = new int[5][];
+    // If any brackets contain an int, only one bracket can be empty
+    c = new int[10][2][9][];
+    
+    // Brackets must have appropriate index and assignments should work
+    b = this.a.minus();
+    a[2][4] = b;
+    
+    // null is a reference type to any class or array
+    c = null;
+    
+    // Array return types must be valid
+    return a;
+  }
+}
+
+class three {
+  // Type name is an int or a class
+  int a;
+  int b;
+  int c;
+  
+  // No parameter name is used twice
+  int add(int a, int b) {
+    // Block encloses variable declarations
+    int c;
+    // this references the enclosing class
+    a = this.b + c;
+    // Return statement matches result type
+    return a + b; 
+  }
+  
+  int minus() {
+    // Constructor parameters must match and rhs = lhs
+    two d = new two(a, b);
+    
+    // ArgList has right number and types of parameters
+    two e = new two(add(a,b), b);
+    
+    // Arglist parameters have been declared in the current scope
+    c = add(a, b);
+    
+    // Operators only allow ints
+    c = c - 1;
+    c = -c;
+    // Equality operators only work on ints or anything to null
+    c = !(a != null);
+    // Relational ops return 1 or 0
+    if(c < b) {
+      // && and || only take 1 or 0
+      b = (1 || 0);
+    }
+    
+    // name has same type as expression
+    a = a - b;
+    // null is a reference type to any class or array
+    b = null;
+  }
+  
+  two minusb(int a) {
+    // do nothing
+  }
+  
+  // Each parameter is an int or the type class is a name
+  int minusc(one c) {
+    // this is only used with dot operator
+    return this.c;
+  }
+}
