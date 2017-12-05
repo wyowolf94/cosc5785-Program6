@@ -1,0 +1,210 @@
+// TestFileIncorrect.decaf
+
+// Lex Error
+#include
+
+//--- Main and Class Errors ---//
+class one {
+  // main should return void or int and take no parameters
+  one main(int a) {
+    
+  }
+}
+
+// classes can only be declared once
+class one {
+
+}
+
+class two {  
+  // There should only be one main
+  int main() {
+    int a;
+    one newOne;
+    
+    // main can't be called as a function
+    newOne = main(a);
+  }
+}
+
+//--- VarDec Errors ---//
+class three {
+  // The type of a vardec should be an int or a class name
+  zero var1;
+  
+  // Can't name a vardec the same as it's sibling
+  int var1;
+  three var1;
+  
+  method1() {
+    int var2;
+    
+    // Type mismatch 
+    var1 = var2;
+  }
+}
+
+//--- Constructor Errors ---//
+class four {
+  // Constructor can only have a return statement if it is empty
+  four(int var1) {
+    four newFour;
+    return newFour;
+  }
+  
+  // Constructor must be named the same as the class
+  five(int var1) {
+    return;
+  }
+}
+
+//--- MethodDec Errors ---//
+class five {
+  // Constructors can't have a return type and
+  // methods can't be named the same as the class
+  int five {
+    int two;
+  }
+  
+  // Return statement must match return type
+  int method1() {
+    four var1;
+    return var1;
+  }
+  
+  // Can't return void
+  void method2() {
+    return void;
+  }
+}
+
+class six {
+  int var1;
+  
+  two method1(int var3) {
+    // no return statement  
+  }
+  
+  int method2() {
+    // If no return statement, it returns 0 or null (type mismatch)
+    int var2 = method1();
+    
+    // Can't reach var3
+    return var3;
+  }
+  
+  int method3(one var1) {
+    // Must access parameter over a global variable
+    return var1;
+  }
+}
+
+//--- ParamList Errors ---//
+class seven {
+  // Constructor params 
+  // Parameter names can only be used once
+  seven(int var1, six var1) {
+    
+  }
+  
+  // Parameters must all have a valid type
+  seven(int var1, zero var2) {
+    
+  }
+  
+  // Method params 
+  // Parameter names can only be used once
+  int method1(int var1, six var1) {
+    return 1;
+  }
+  
+  // Parameters must all have a valid type
+  int method2(int var1, zero var2) {
+    
+  }
+}
+
+
+//--- LocalVarDec Errors ---//
+class eight {
+  int var1;
+  
+  method1() {
+    // Type must be an int or a class name
+    zero var1;
+    
+    // Names can't be reused in same scope
+    int var1;
+    seven var1;
+  }
+  
+  method2() {
+    seven var1;
+    
+    // Type mismatch, local var must be accessed over global var
+    var1 = 1;
+  }
+}
+
+//--- Statement Errors ---//
+class nine {
+  int var1;
+  
+  nine() {
+    int var2;
+    eight var8;
+    nine var9;
+    
+    // Type mismatch
+    var1 = this.method1();
+    
+    // RHS has undeclared identifier
+    var2 = var8.var2;
+    
+    // RHS has incorrect dot operator
+    var2 = this.method3();
+    
+    // LHS is undeclared var
+    var3 = this.method1();
+    
+    // This can only be used with the dot operator
+    var9 = this;
+  }
+  
+  eight method1() {
+    eight var2;
+    int[][][] var3;
+    int[][][][] var4;
+    
+    // Unreachable variable
+    var2 = var8;
+    
+    // Type mismatch, Inappropriate index
+    var1 = var3[2][3][];
+    
+    // Type mismatch, wrong dimensional array
+    var3 = var4;
+    
+    return 0;
+  }
+  
+  int[] method2() {
+    int[][] var2;
+    
+    // Incorrect array return type
+    return var2;
+  }
+}
+
+//--- Expression Errors ---//
+class ten {
+  
+}
+
+//--- New Expression Errors ---//
+class eleven {
+  
+}
+
+
+

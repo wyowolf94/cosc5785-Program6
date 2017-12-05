@@ -1,8 +1,5 @@
 // TestFileCorrect.decaf
 
-// Lex Error
-#include
-
 // One and only one main
 class one {
   // Var type is int or class name
@@ -24,6 +21,8 @@ class one {
     // Main returns an int or nothing
     return 0;
   }
+  
+  // Not every class needs a constructor
   
   void newTwo(int a, int b) {
     // Parameters are reachable over globals
