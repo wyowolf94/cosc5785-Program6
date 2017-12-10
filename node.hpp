@@ -1636,7 +1636,12 @@ class nameNode : public Node
         }
         
         SymbolTable* nameClass = parent->lookup_class(nameType);
-        
+        if(nameClass == 0) {
+          cerr << "Type Error: Invalid type " << nameType 
+               << " at " << lnum << endl;
+          return INVALIDSYM;
+        }
+ 
          // Lookup Id in nameClass
         SymbolTable* tempTable = new MethodDec(parent,id);
         ((MethodDec*)tempTable)->setParams(args);
@@ -1652,7 +1657,7 @@ class nameNode : public Node
         //delete tempTable;
         return found;
       } else if (type == "exp"){
-        cerr << "Type Error: Just wrong " << id << " at " << lnum << endl;
+        cerr << "Type Error: Expression error wtih " << id << " at " << lnum << endl;
         return INVALIDSYM;
       } else if (type == "id") {
         string nameType = parent->getEnclosingClass(parent);
@@ -1663,6 +1668,11 @@ class nameNode : public Node
         }
         
         SymbolTable* nameClass = parent->lookup_class(nameType);
+        if(nameClass == 0) {
+          cerr << "Type Error: Invalid type " << nameType 
+               << " at " << lnum << endl;
+          return INVALIDSYM;
+        }
         
          // Lookup Id in nameClass
         SymbolTable* tempTable = new MethodDec(parent,id);
@@ -1701,7 +1711,12 @@ class nameNode : public Node
           return INVALIDSYM;
         }
         SymbolTable* nameClass = parent->lookup_class(nameType);
-        
+        if(nameClass == 0) {
+          cerr << "Type Error: Invalid type " << nameType 
+               << " at " << lnum << endl;
+          return INVALIDSYM;
+        }
+ 
         string initVal = "";
         if(nameType == "int") {
           initVal = "0";
