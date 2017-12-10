@@ -41,7 +41,7 @@ class one {
     // print takes 0 or more ints and returns void
     print(2,3,4,5);
 
-    return c;
+    return;
   }
 }
 
@@ -131,7 +131,7 @@ class three {
     c = c - 1;
     c = -c;
     // Equality operators only work on ints or anything to null
-    c = !(a != null);
+    c = !(a != 0);
     // Relational ops return 1 or 0
     if(c < b) {
       // && and || only take 1 or 0
@@ -141,7 +141,7 @@ class three {
     // name has same type as expression
     a = a - b;
     // null is a reference type to any class or array
-    b = null;
+    d = null;
   }
   
   two minusb(int a) {

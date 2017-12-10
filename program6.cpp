@@ -62,8 +62,8 @@ int main() {
   // Type Check
   if(forest.size() > 0) {
     for(unsigned int i = 0; i < forest.size(); i++) {
-      bool correct = forest[i]->typeCheck();
-      cout << "Correct: " << correct << endl;
+      forest[i]->typeCheck();
+      //cout << "Correct: " << correct << endl;
     }
   }
 

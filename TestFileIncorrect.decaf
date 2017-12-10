@@ -35,7 +35,8 @@ class three {
   // Can't name a vardec the same as it's sibling
   int var1;
   three var1;
-  
+ 
+  // Constructor must be named the same as class 
   method1() {
     int var2;
     
@@ -62,7 +63,7 @@ class four {
 class five {
   // Constructors can't have a return type and
   // methods can't be named the same as the class
-  int five {
+  int five() {
     int two;
   }
   
@@ -74,7 +75,7 @@ class five {
   
   // Can't return void
   void method2() {
-    return void;
+    //return void;
   }
 }
 
@@ -87,7 +88,9 @@ class six {
   
   int method2() {
     // If no return statement, it returns 0 or null (type mismatch)
-    int var2 = method1();
+    int var2;
+
+    var2 = method1(var2);
     
     // Can't reach var3
     return var3;
@@ -180,7 +183,7 @@ class nine {
     var2 = var8;
     
     // Type mismatch, Inappropriate index
-    var1 = var3[2][3][];
+    var1 = var3[2][3][1];
     
     // Type mismatch, wrong dimensional array
     var3 = var4;
@@ -211,7 +214,7 @@ class ten {
     a.method2(b);
 
     // Wrong types of parameters
-    b = print(a);
+    print(a);
 
     // Undeclared variable in arglist
     b = method2(c);
@@ -219,10 +222,11 @@ class ten {
 
   int method2(int a) {
     // Read must return an int and take no paramaters 
-    this.a = read(a);
+    // this.a = read(a);
 
     // Constructor methods can't be called without new op
-    ten d = ten();
+    ten d;
+    d = ten();
 
     return 0;
   } 
@@ -234,7 +238,7 @@ class ten {
     }
 
     if(a != null) {
-      // This should work
+      // Can't compare int to null
     }
 
     while(!a) {

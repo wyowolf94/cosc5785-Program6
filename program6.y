@@ -669,7 +669,7 @@ exp : name
          delete $2;
          delete $3;}
     | READ LPAREN error
-        {cerr << endl << "Missing ')' after read: line " << $1->lNum << endl << endl;
+        {cerr << endl << "Missing ')' after read (read doesn't take params): line " << $1->lNum << endl << endl;
          $$ = new errorNode("<Expression>");
          $$->setlnum($1->lNum);
          $$->setValid(false);
