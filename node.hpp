@@ -939,9 +939,9 @@ class statementNode : public Node
         
         string name = children[0]->typeCheckMet(parentTable, args);
         
-        for(unsigned int i = 0; i < args.size(); i++){
+        /*for(unsigned int i = 0; i < args.size(); i++){
           delete args[i];
-        }
+        }*/
         return (name != INVALIDSYM);
       } else if(type == "printarglist") {
         // <Statement> -> print ( <ArgList> ) ;
@@ -1383,9 +1383,9 @@ class expNode : public Node
         
         string name = children[0]->typeCheckMet(parent, args);
         
-        for(unsigned int i = 0; i < args.size(); i++){
+        /*for(unsigned int i = 0; i < args.size(); i++){
           delete args[i];
-        }
+        }*/
         return name;
       } else if (expType == "read") {
         // <Expression> -> read ()
@@ -1503,10 +1503,10 @@ class newexpNode : public Node
                << lnum << endl;
         }
         
-        for(unsigned int i = 0; i < args.size(); i++){
+        /*for(unsigned int i = 0; i < args.size(); i++){
           delete args[i];
-        }
-        delete tempTable;
+        }*/
+        //delete tempTable;
         return id;
       } else if(type == "empty") {
         return children[0]->getType();
