@@ -198,12 +198,95 @@ class nine {
 
 //--- Expression Errors ---//
 class ten {
-  
+  nine a;
+  eight b;
+  int c;
+
+  ten(nine a, eight b, int c) {
+    return;
+  }
+
+  int method1(int b) {
+    // Incorrect number of paramters
+    a.method2(b);
+
+    // Wrong types of parameters
+    b = print(a);
+
+    // Undeclared variable in arglist
+    b = method2(c);
+  } 
+
+  int method2(int a) {
+    // Read must return an int and take no paramaters 
+    this.a = read(a);
+
+    // Constructor methods can't be called without new op
+    ten d = ten();
+
+    return 0;
+  } 
+
+  int method3(int a) {
+    // Type mismatch -> have to match any type to itself or null
+    if(a == b) {
+
+    }
+
+    if(a != null) {
+      // This should work
+    }
+
+    while(!a) {
+      // Operator types aren't ints
+      a = a + b;
+      a = a % b;
+      a = a * b; 
+    }
+
+    // && and || only take a 1 or a 0
+    a = 4;
+    c = 2;
+    if(a && c || c) {
+
+    }
+  }
 }
 
 //--- New Expression Errors ---//
 class eleven {
+  int[][][][] c;
+
+  eleven(int b) {
+    return;
+  }
   
+  int  method1() {
+    // Brackets containing an int can only be followed by one empty []
+    c = new int[10][][][];
+
+    // Wrong number of brackets
+    c = new int[][][];
+  }  
+
+  int method2() {
+    eleven b;
+    int[] d;
+
+    // This should work
+    b = new eleven();
+
+    // But not this
+    b = new eleven(c);
+
+    // or this (incorrect params on both)
+    b = new eleven(d);
+  }
+
+  int method3(int[] a) {
+    // c is not an int
+    a[c] = 2;
+  }
 }
 
 
