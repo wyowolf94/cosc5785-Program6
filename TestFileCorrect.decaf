@@ -9,12 +9,15 @@ class one {
   
   // Main returns int or void and has an empty param list
   int main() {
+    three c;
+
     // Local var is accessed over global var
     int b;
     a = b;
     
     // Constructor methods can't be called w/o new
-    three c = new three();
+    c = new three();
+    
     // new returns a reference to an object 
     this.b = c.minusb(b);
     
@@ -34,8 +37,11 @@ class one {
     int c;
     // read takes no params and returns an int
     c = read();
+    
     // print takes 0 or more ints and returns void
-    return c.print(2,3,4,5);
+    print(2,3,4,5);
+
+    return c;
   }
 }
 
@@ -63,7 +69,7 @@ class two {
       two c;
       int d;
       // An identifier has been declared in appropriate class
-      this.a.minusb(b) = new two(a, b);
+      c = new two(a, b);
     }
     
     // No Return Statement or return statement is empty
@@ -110,10 +116,13 @@ class three {
   
   int minus() {
     // Constructor parameters must match and rhs = lhs
-    two d = new two(a, b);
+    two d;
+    two e; 
+
+    d = new two(a, b);
     
     // ArgList has right number and types of parameters
-    two e = new two(add(a,b), b);
+    e = new two(add(a,b), b);
     
     // Arglist parameters have been declared in the current scope
     c = add(a, b);
