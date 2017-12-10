@@ -1476,18 +1476,20 @@ class newexpNode : public Node
         }
         
         vector<Variable*> args;
-        for(unsigned int i = 0; i < children[0]->children.size(); i++) {
-          string paramType = children[0]->children[i]->typeCheckStr(parent);
-          string initVal = "";
-          if(paramType == "int") {
-            initVal = "0";
-          } else {
-            initVal = "null";
+        if(children[0]->children.size() != 0) {
+          for(unsigned int i = 0; i < children[0]->children[0]->children.size(); i++) {
+            string paramType = children[0]->children[0]->children[i]->typeCheckStr(parent);
+            string initVal = "";
+            if(paramType == "int") {
+              initVal = "0";
+            } else {
+              initVal = "null";
+            }
+            Variable* temp = new Variable {paramType, "id", initVal, true};
+            args.push_back(temp);
           }
-          Variable* temp = new Variable {paramType, "id", initVal, true};
-          args.push_back(temp);
         }
-        
+
         if(args.size() == 0) {
           return id;
         }
@@ -1495,7 +1497,7 @@ class newexpNode : public Node
         SymbolTable* tempTable = new ConstrDec(idenClass,id);
         ((ConstrDec*)tempTable)->setParams(args);
         
-        string ctype = idenClass->lookup_children(tempTable);
+        string ctype = idenClass->getBlockChild()->lookup_children(tempTable);
         if(ctype == INVALIDSYM){
           cerr << "Type Error: No matching constructor in " << id << " at "
                << lnum << endl;

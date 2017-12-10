@@ -292,6 +292,11 @@ class ClassDec : public SymbolTable
       return iden;
     }
     
+    SymbolTable* getBlockChild() {
+      auto it = children.begin();
+      return it->second;
+    }
+
     void printTable() {
       cout << endl  << type << " -> " << iden << endl;
       
