@@ -103,27 +103,27 @@ class Node
     }
     
     virtual SymbolTable* getTable(){
-      cout << "BASE CLASS METHOD CALLED" << endl;
+      cout << "getTable: BASE CLASS METHOD CALLED" << endl;
       return 0;
     }
     
     virtual void buildTable(SymbolTable* st) {
-      cout << "PROBLEM!PROBLEM!PROBLEM!PROBLEM!PROBLEM!PROBLEM!" << endl;
+      cout << "buildTable: BASE CLASS METHOD CALLED" << endl;
       return;
     }
     
     virtual bool typeCheck() {
-      cout << "BASE CLASS METHOD CALLED" << endl;
+      cout << "typcheck: BASE CLASS METHOD CALLED" << endl;
       return false;
     }
     
     virtual string typeCheckStr(SymbolTable* parent) {
-      cout << "BASE CLASS METHOD CALLED" << endl;
+      cout << "typeCheckStr: BASE CLASS METHOD CALLED" << endl;
       return INVALIDSYM;
     }
     
     virtual string typeCheckMet(SymbolTable* parent, vector<Variable*> args){
-      cout << "BASE CLASS METHOD CALLED" << endl;
+      cout << "typeCheckMet: BASE CLASS METHOD CALLED" << endl;
       return INVALIDSYM;
     }
 
@@ -1648,7 +1648,7 @@ class nameNode : public Node
         SymbolTable* tempTable = new MethodDec(parent,id);
         ((MethodDec*)tempTable)->setParams(args);
 
-        string found = nameClass->lookup_children(tempTable);
+        string found = nameClass->getBlockChild()->lookup_children(tempTable);
         if(found == INVALIDSYM) {
           cerr << "Type Error: Invalid Method " << id 
                << " for class " << nameClass->getIden()
