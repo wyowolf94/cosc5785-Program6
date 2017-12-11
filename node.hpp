@@ -709,11 +709,10 @@ class methoddecNode : public Node
       
       return true;
     }
-    
-    bool typeCheck() {
-      if(id == "main" && maindec == 0) {
-        bool correct = true;
-        
+   
+    bool checkMain() {
+     bool correct  = true;
+     if(id == "main" && maindec == 0) {        
         string rtype = children[0]->getType();
 
         vector<Variable*> params;
@@ -739,23 +738,48 @@ class methoddecNode : public Node
 
         if(correct) {
           maindec = 1;
-        } else {
-          return correct;
-        }
+        } //else {
+          //return correct;
+        //}
       } else  if (id == "main") {
         cerr << "Type Error: Main declared multiple times at " << lnum << endl;
+        //return false;
+        correct = false;
+      }
+      return correct;
+    }
+
+    bool checkName() {
+      // Get Grandparent
+      SymbolTable* grandparent = parentTable->getParent();
+
+      // Check grandparent Type
+      if(grandparent->getType() != CLASSTYPE) {
+        cout << "PROBLEM" << endl;
+        return false;
+      } 
+      
+      // Check class name with id
+      if(grandparent->getIden() == id) {
+        cerr << "Type Error: Method can't be named the same as the class at " 
+             << lnum << endl;
         return false;
       }
-
-      // Check Params and Return Type
+     
+      return true;
+    }
+ 
+    bool typeCheck() {
+      bool cm = checkMain();
       bool cp = checkParameters();
       bool cr = checkReturnType();
+      bool cn = checkName();
 
       // Collect returns
       if(type == "type") {
-        return children[2]->typeCheck() && cp && cr;
+        return children[2]->typeCheck() && cp && cr && cm && cn;
       } else if(type == "void") {
-        return children[1]->typeCheck() && cp && cr;
+        return children[1]->typeCheck() && cp && cr && cm && cn;
       } else {
         cout << "PROBLEM IN METHODDEC - TYPECHECK" << endl;
         return false;
@@ -1592,7 +1616,7 @@ class newexpNode : public Node
           
           if(expType != "int") {
             cerr << "Type Error: Invalid Type (does not evaluate to [int]) " 
-                 << simpType  << " at line " << lnum << endl;
+                 << simpType  << " at " << lnum << endl;
             return INVALIDSYM;
           }
         }
@@ -1704,7 +1728,7 @@ class nameNode : public Node
         if(found == INVALIDSYM) {
           cerr << "Type Error: Invalid Method " << id 
                << " for class " << nameClass->getIden()
-               << " at line " << lnum << endl;
+               << " at " << lnum << endl;
           
         }
         
@@ -1740,7 +1764,7 @@ class nameNode : public Node
         if(found == INVALIDSYM) {
           cerr << "Type Error: Invalid Method " << id 
                << " for class " << nameClass->getIden()
-               << " at line " << lnum << endl;
+               << " at " << lnum << endl;
         }
         
         //delete tempTable;
@@ -1788,7 +1812,7 @@ class nameNode : public Node
         if(found == INVALIDSYM) {
           cerr << "Type Error: Invalid Identifier " << id 
                << " for class " << nameClass->getIden()
-               << " at line " << lnum << endl;
+               << " at " << lnum << endl;
         }
         
         return found;
