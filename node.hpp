@@ -22,7 +22,7 @@ using std::cerr;
 class Node 
 {
   public:
-   // static int maindec;    
+    static int maindec;    
     vector<Node*> children;
   
     // Constructor
@@ -50,6 +50,8 @@ class Node
     bool   getValid() const { return valid;}
     
     int    getlnum()  const { return lnum; }
+ 
+    //virtual int getmain()  const { return maindec;} 
 
     // Set Functions
     void setVal(int i)          { ival = i; }
@@ -63,6 +65,8 @@ class Node
     void setValid(const bool b) { valid = b; }
     
     void setlnum(int l)         { lnum = l; }
+
+    //virtual void setmain(int i)         { maindec = i;}
     
     // Crap code
     virtual string getType() {
@@ -148,9 +152,12 @@ class Node
     string sval;
 
     bool valid;
+
+    //static int maindec;
 };
 
-int SymbolTable::maindec = 0;
+//int SymbolTable::maindec = 0;
+//int Node::maindec = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -577,12 +584,12 @@ class methoddecNode : public Node
    
     void buildTable(SymbolTable* parent) {
       // Create SymbolTable for Method Declaration
-      if(id == "main" && maindec ==  0) {
+      /*if(id == "main" && maindec  ==  0) {
         maindec = 1;
       } else if (id == "main") {
         cerr << "Type Error: Main declared multiple times at " << lnum  << endl;
-        return;
-      }
+        //return;
+      }*/
       MethodDec* new_method = new MethodDec(parent, id);
       vector<Variable*> params;
       if(type == "type") {
@@ -704,10 +711,46 @@ class methoddecNode : public Node
     }
     
     bool typeCheck() {
+      if(id == "main" && maindec == 0) {
+        bool correct = true;
+        
+        string rtype = children[0]->getType();
+
+        vector<Variable*> params;
+        if(type == "void") { 
+          params = children[0]->getParams();
+        } else if(type == "type") {
+          params = children[1]->getParams();
+        } else {
+          cout << "PROBLEM" << endl;
+        }
+        int numParams = params.size(); 
+        
+        if(rtype != "void" && rtype != "int") {
+          cerr << "Type Error: Main can only return 'void' or 'int', not " 
+               << rtype << " at " << lnum << endl;
+          correct = false;
+        } 
+        
+        if(numParams != 0) {
+          cerr << "Type Error: Main called with paramaters at " << lnum << endl;
+          correct = false;
+        }
+
+        if(correct) {
+          maindec = 1;
+        } else {
+          return correct;
+        }
+      } else  if (id == "main") {
+        cerr << "Type Error: Main declared multiple times at " << lnum << endl;
+        return false;
+      }
+
       // Check Params and Return Type
       bool cp = checkParameters();
       bool cr = checkReturnType();
-      
+
       // Collect returns
       if(type == "type") {
         return children[2]->typeCheck() && cp && cr;

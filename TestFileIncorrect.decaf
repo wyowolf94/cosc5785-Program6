@@ -9,6 +9,13 @@ class one {
   one main(int a) {
     
   }
+  int main() {}
+
+  int method1() {
+    int a;
+    // main can't be called as a method
+    a = main();
+  }
 }
 
 // classes can only be declared once

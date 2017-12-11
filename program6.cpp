@@ -23,6 +23,7 @@ using namespace std;
 attributes *atts;
 yyFlexLexer myScanner;
 vector<Node*> forest;
+int Node::maindec = 0;
 
 int main() { 
   // Initialize Attributes Struct
