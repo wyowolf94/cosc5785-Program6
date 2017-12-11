@@ -948,7 +948,7 @@ class statementNode : public Node
         }
         string expression = children[1]->typeCheckStr(parentTable);
         if(expression == INVALIDSYM){
-          cerr << "Type Error: Unrecognized expression at " << lnum << endl;
+          //cerr << "Type Error: Unrecognized expression at " << lnum << endl;
           return false;
         }
         
@@ -973,7 +973,8 @@ class statementNode : public Node
         vector<Variable*> args;
         if(children[1]->children.size() > 0) {
             for(unsigned int i = 0; i < children[1]->children[0]->children.size(); i++) {
-            string paramType = children[1]->children[0]->children[i]->typeCheckStr(parentTable);
+            string paramType = 
+              children[1]->children[0]->children[i]->typeCheckStr(parentTable);
             if(paramType == INVALIDSYM){
               return false;
             }
@@ -990,7 +991,6 @@ class statementNode : public Node
         }
         
         string name = children[0]->typeCheckMet(parentTable, args);
-        
         /*for(unsigned int i = 0; i < args.size(); i++){
           delete args[i];
         }*/
@@ -1713,7 +1713,11 @@ class nameNode : public Node
       } else if (type == "exp"){
         cerr << "Type Error: Expression error wtih " << id << " at " << lnum << endl;
         return INVALIDSYM;
-      } else if (type == "id") {
+      } else if (type == "id") { 
+        if(id == "main" || id == "Main") {
+          cerr << "Type Error: Invalid call to main at " << lnum << endl;
+          return INVALIDSYM;
+        }
         string nameType = parent->getEnclosingClass(parent);
         
         if(nameType == INVALIDSYM){
