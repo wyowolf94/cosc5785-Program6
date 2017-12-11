@@ -34,6 +34,7 @@ using std::find;
 class SymbolTable 
 {
   public:
+    static int maindec;
     // Constructor
     SymbolTable(SymbolTable * p, string id) {
       parent = p;

@@ -22,6 +22,7 @@ using std::cerr;
 class Node 
 {
   public:
+   // static int maindec;    
     vector<Node*> children;
   
     // Constructor
@@ -148,6 +149,8 @@ class Node
 
     bool valid;
 };
+
+int SymbolTable::maindec = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -571,9 +574,15 @@ class methoddecNode : public Node
       type = t;
       id = i;
     } 
-    
+   
     void buildTable(SymbolTable* parent) {
       // Create SymbolTable for Method Declaration
+      if(id == "main" && maindec ==  0) {
+        maindec = 1;
+      } else if (id == "main") {
+        cerr << "Type Error: Main declared multiple times at " << lnum  << endl;
+        return;
+      }
       MethodDec* new_method = new MethodDec(parent, id);
       vector<Variable*> params;
       if(type == "type") {
