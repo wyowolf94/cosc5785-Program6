@@ -1357,7 +1357,7 @@ class expNode : public Node
         return e1;
       } else if (expType == "unyop") {
         // <Expression> -> Unyop <Expression?"
-        return children[0]->typeCheckStr(parent);
+        return children[1]->typeCheckStr(parent);
       } else if (expType == "name") {
         // <Expression> -> <Name>
         return children[0]->typeCheckStr(parent);        
