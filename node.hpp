@@ -1804,20 +1804,26 @@ class nameNode : public Node
         }
         
         if(args.size() == 0) {
-          return idenClass->getIden();
+         // return idenClass->getIden();
         }
         
         SymbolTable* tempTable = new ConstrDec(idenClass,id);
         ((ConstrDec*)tempTable)->setParams(args);
         
         string ctype = idenClass->lookup_children(tempTable);
+        
         if(ctype == INVALIDSYM){
-          cerr << "Type Error: No matching constructor in " << id << " at "
+          cerr << "Type Error: Invalid constructor call at "
                << lnum << endl;
-        }
+          return INVALIDSYM;
+        } else {
+          cerr << "Type Error: Invalid constructor call to " 
+               << ctype << " at " << lnum << endl;
+          return INVALIDSYM;
+        } 
         
         //delete tempTable;
-        return idenClass->getIden();
+        //return idenClass->getIden();
         
       } else if (type == "dotid"){
         string nameType = children[0]->typeCheckStr(parent);
@@ -1840,10 +1846,16 @@ class nameNode : public Node
         if(found == INVALIDSYM) {
           cerr << "Type Error: Invalid Method " << id 
                << " for class " << nameClass->getIden()
-               << " at " << lnum << endl;
-          
+               << " at " << lnum << endl;   
+          return INVALIDSYM;
         }
-        
+       
+        SymbolTable* tempTwo = parent->lookup_class(id);
+        if(tempTwo != 0 ) {
+          cerr << "Type Error: Invalid cosntructor call to "
+               << found << " at " << lnum << endl;
+          return INVALIDSYM;
+        }
         //delete tempTable;
         return found;
       } else if (type == "exp"){
@@ -1877,8 +1889,15 @@ class nameNode : public Node
           cerr << "Type Error: Invalid Method " << id 
                << " for class " << nameClass->getIden()
                << " at " << lnum << endl;
+          return INVALIDSYM;
         }
         
+        if(found == nameClass->getIden()) {
+          cerr << "Type Error: Invalid constructor call to " 
+               << found << " at " << lnum << endl;
+          return INVALIDSYM;
+        }
+
         //delete tempTable;
         return found;
         
