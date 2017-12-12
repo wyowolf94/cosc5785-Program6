@@ -215,7 +215,7 @@ class classdecNode : public Node
       // Add the ClassDec to the parent
       bool check = parent->insert(new_class);
       if(!check){
-        cerr << "Type Error: Class declared Twice " << id << " at " 
+        cerr << "Type Error: Class " << id << " declared multiple times at " 
              << lnum << endl;
       }
       
@@ -1474,7 +1474,7 @@ class expNode : public Node
           return INVALIDSYM;
         }
 
-        if(children[0]->getType() != INVALIDSYM && children[2]->getType() != INVALIDSYM) {
+        /*if(children[0]->getType() != INVALIDSYM && children[2]->getType() != INVALIDSYM) {
         if(children[1]->getType() == "&&" || children[1]->getType() == "||"){
           if(children[0]->getNum() != 0 && children[0]->getNum() != 1) {
             cerr << "Type Error: LHS of " << children[1]->getType() 
@@ -1487,7 +1487,7 @@ class expNode : public Node
             typeCorrect = false;
           }
         }
-        }
+        }*/
         if(!typeCorrect) {
           return INVALIDSYM;
         }
