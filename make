@@ -1869,7 +1869,7 @@ class nameNode : public Node
         //delete tempTable;
         return found;
       } else if (type == "exp"){
-        cerr << "Type Error: Invalid bracketed expression at " << lnum << endl;
+        cerr << "Type Error: Expression error wtih " << id << " at " << lnum << endl;
         return INVALIDSYM;
       } else if (type == "id") {
         if(id == "main" || id == "Main") {
@@ -1936,8 +1936,7 @@ class nameNode : public Node
         // Return the type of the identifier
         Variable* tempVar = new Variable{"", id, "null", true};
         string nameCheck = parent->lookup_ancestors(tempVar);
-        //cout << nameCheck << " " << lnum << endl;
-      
+        //cout << "---> " << nameCheck << endl;
         if(nameCheck == INVALIDSYM) {
           cerr << "Type Error: Invalid identifier " << id << " at " << lnum << endl;
         }
@@ -1975,20 +1974,16 @@ class nameNode : public Node
       } else if(type == "exp") {
         string name = children[0]->typeCheckStr(parent);
         string exp = children[1]->typeCheckStr(parent);
-       
-        //size_t n = count(name.begin(), name.end(), '[');
-        //int cs [2] = {static_cast<int>(n), 1};
+        //cout << "!!! name: " << name << " at " << lnum << endl;  
+        //cout << "children[0]->children.size() " << children[0]->children.size() << endl; 
+        //printNode();
+        size_t n = count(name.begin(), name.end(), '[');
+        int cs [2] = {static_cast<int>(n), 0};
         //int* counts = getCallCount(cs, this);
-        
-        //cout << lnum << " - " << counts[0] << ", " << counts[1] << endl;
-      
-        string enclClass = parent->getEnclosingClass(parent);
-        if(name == enclClass) {
-          cerr << "Type Error: 'this' is not an array type at " 
-               << lnum << endl;
-          return INVALIDSYM;
-        }
-       
+        //cout << lnum << endl;
+        cout << "!!!! " << counts[0] << ", " << counts[1] << endl;
+        //cout << "!! " << children[0]->getType()<< endl;
+        cout << name << " " << n << " -  " << lnum << endl; 
         if(exp != "int"){
           cerr << "Type Error: Invalid expression (does not evaluate to [int]) at " 
                << lnum << endl;
