@@ -1,0 +1,9 @@
+class one () {
+  int method1() {
+    var3[][][];
+    var4[][][][];
+    
+    var3 = var4[3][2][1][];
+  }
+
+}

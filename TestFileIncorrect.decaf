@@ -197,7 +197,7 @@ class nine {
     var2 = var8;
     
     // Type mismatch, Inappropriate index
-    var1 = var3[2][3][1];
+    var1 = var3[2][3][];
     
     // Type mismatch, wrong dimensional array
     var3 = var4;

@@ -972,14 +972,15 @@ class statementNode : public Node
         }
         string expression = children[1]->typeCheckStr(parentTable);
         if(expression == INVALIDSYM){
-          //cerr << "Type Error: Unrecognized expression at " << lnum << endl;
+         // cerr << "Type Error: Invalid r-value (expression) "
+         //      << " at " << lnum << endl;
           return false;
         }
         
         if((name == "int" && expression == "null") 
           ||(name == "null" && expression == "int")) {
           cerr << "Type Error: Type Mismatch " << name << " != " << expression
-          << " at " << lnum << endl;
+               << " at " << lnum << endl;
           return false;
         }
         
@@ -1678,7 +1679,7 @@ class nameNode : public Node
     } 
     
     string getFuncName(){
-    return id;
+      return id;
     }
     
     string typeCheckMet(SymbolTable* parent, vector<Variable*> args){
@@ -1737,18 +1738,18 @@ class nameNode : public Node
       } else if (type == "exp"){
         cerr << "Type Error: Expression error wtih " << id << " at " << lnum << endl;
         return INVALIDSYM;
-      } else if (type == "id") { 
+      } else if (type == "id") {
         if(id == "main" || id == "Main") {
           cerr << "Type Error: Invalid call to main at " << lnum << endl;
           return INVALIDSYM;
         }
         string nameType = parent->getEnclosingClass(parent);
-        
+
         if(nameType == INVALIDSYM){
-          
+          //cerr << "Type Error: *** " << lnum << endl; 
           return INVALIDSYM;
         }
-        
+                   
         SymbolTable* nameClass = parent->lookup_class(nameType);
         if(nameClass == 0) {
           cerr << "Type Error: Invalid type " << nameType 
@@ -1785,7 +1786,11 @@ class nameNode : public Node
         // Check that the identifier exists
         // Return the type of the identifier
         Variable* tempVar = new Variable{"", id, "null", true};
-        return parent->lookup_ancestors(tempVar);
+        string nameCheck = parent->lookup_ancestors(tempVar);
+        if(nameCheck == INVALIDSYM) {
+          cerr << "Type Error: Invalid identifier " << id << " at " << lnum << endl;
+        }
+        return nameCheck;
       } else if(type == "dotid") {
         // Get the type of <name> and the class that it is in
         string nameType = children[0]->typeCheckStr(parent);
