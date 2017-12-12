@@ -723,12 +723,15 @@ class methoddecNode : public Node
     bool checkMain() {
      bool correct  = true;
      if(id == "main" && maindec == 0) {        
-        string rtype = children[0]->getType();
+        //string rtype = children[0]->getType();
+        string rtype = "";
 
         vector<Variable*> params;
         if(type == "void") { 
+          rtype = "void";
           params = children[0]->getParams();
         } else if(type == "type") {
+          rtype = children[0]->getType();
           params = children[1]->getParams();
         } else {
           cout << "PROBLEM" << endl;
@@ -1440,15 +1443,33 @@ class expNode : public Node
           cerr << "Type Error: Invalid Bool Expression (invalid args) at " << lnum << endl;
           return INVALIDSYM;
         }
+
+        if(e1 == "int" && e2 == "int") {
+          return "int";
+        }
+         
         if((e1 == "int" && e2 == "null") ||(e1 == "null" && e2 == "int")) {
           cerr << "Type Error: Invalid Bool Expression (int to null) at " << lnum << endl;
           return INVALIDSYM;
         }
-        if(e1 == e2 || e1 == "null" || e2 == "null") {
+
+        string relop = children[1]->getType();
+        //if((relop == "==" || relop == "!=") && e1 == e2) {
           //cout << "--> int" << endl;
+          //return "int";
+        //}
+        if((relop == "==" || relop == "!=") && (e1 == "null" || e2 == "null")) {
           return "int";
         }
-        cerr << "Type Error: Invalid Bool Expression (type mismatch) at " << lnum << endl;
+        
+        if(relop == "==" || relop == "!=") {
+          cerr << "Type Error: Invalid arguments for " << relop << " at " 
+               << lnum << endl;
+        } else {
+          cerr << "Type Error: " << relop << " only takes integer arguments at "
+               << lnum << endl;
+        }
+        //cerr << "Type Error: Invalid Bool Expression (type mismatch) at " << lnum << endl;
         return INVALIDSYM;
       } else if (expType == "sumop" || expType == "proop") {
         // <Expression> -> <Expression> Sumop/Proop <Expression>
@@ -1646,12 +1667,23 @@ class newexpNode : public Node
         //delete tempTable;
         return id;
       } else if(type == "empty") {
-        return children[0]->getType();
-      } else if(type == "bracks") {
         string simpType = children[0]->getType();
-        
+        //cout << "----> " << simpType << endl;
+        if(simpType == INVALIDSYM) {
+          cerr << "Type Error: Invalid type in New Expression at " 
+               << lnum << endl;
+          return INVALIDSYM;
+        } else if(simpType == "int") {
+          cerr << "Type Error: Invalid New Expression 'new int' at "
+               << lnum << endl;
+          return INVALIDSYM;
+        } 
+        return simpType;
+      } else if(type == "bracks") {
+        string simpType = children[0]->getType();      
+ 
         if(simpType == INVALIDSYM){
-          cerr << "Type Error: Invalid type " << simpType << " at " 
+          cerr << "Type Error: Invalid type in New Expression at " 
                << lnum << endl;
           return INVALIDSYM;
         }
@@ -1665,6 +1697,15 @@ class newexpNode : public Node
           }
         }   
         
+        if(simpType == "int") {
+          if(children[1]->children.size() == 0 && 
+             children[2]->children.size() == 0) {
+            cerr << "Type Error: Invalid New Expression 'new int' at "
+                 << lnum << endl;
+            return INVALIDSYM;
+          }
+        }
+
         if(children[1]->children.size() > 0 &&  children[2]->children.size() > 1) {
           cerr << "Type Error: Only one empty bracket allowed in new expression at "
                << lnum << endl;
@@ -1747,6 +1788,10 @@ class nameNode : public Node
     string getFuncName(){
       return id;
     }
+ 
+    /*string getType() {
+      return type;
+    }*/
     
     string typeCheckMet(SymbolTable* parent, vector<Variable*> args){
       if(type == "this"){
@@ -1843,7 +1888,16 @@ class nameNode : public Node
         return INVALIDSYM;
       }
     }
-    
+   
+    int* getCallCount(int counts [2], nameNode* current) {
+      if(current->type != "exp") {  
+        return counts;
+      } else {
+        counts[1]++;
+        return getCallCount(counts,(nameNode*) current->children[0]);
+      }
+    }
+ 
     string typeCheckStr(SymbolTable* parent) {
       // return the type of name
       if(type == "this") {
@@ -1890,6 +1944,15 @@ class nameNode : public Node
       } else if(type == "exp") {
         string name = children[0]->typeCheckStr(parent);
         string exp = children[1]->typeCheckStr(parent);
+        //cout << "!!! name: " << name << " at " << lnum << endl;  
+        //cout << "children[0]->children.size() " << children[0]->children.size() << endl; 
+        //printNode();
+        //size_t n = count(name.begin(), name.end(), '[');
+        //int cs [2] = {static_cast<int>(n), 0};
+        //int* counts = getCallCount(cs, this);
+        //cout << lnum << endl;
+        //cout << "!!!! " << counts[0] << ", " << counts[1] << endl;
+        //cout << "!! " << children[0]->getType()<< endl;
         if(exp != "int"){
           cerr << "Type Error: Invalid expression (does not evaluate to [int]) at " 
                << lnum << endl;
@@ -2042,6 +2105,8 @@ class relopNode : public Node
       type = t;
     } 
 
+    string getType() { return type; } 
+
     virtual void printNode(ostream * out = 0) {
       cout << " " << type << " ";
     }
@@ -2057,6 +2122,8 @@ class unyopNode : public Node
     unyopNode(string t) : Node () {
       type = t;
     } 
+ 
+    string getType() {return type;}
 
     virtual void printNode(ostream * out = 0) {
       cout << type;
