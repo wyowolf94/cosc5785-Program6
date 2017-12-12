@@ -1,0 +1,35 @@
+// vim: ft=java
+// This is a basic input file for the 5th program that will be their compiler.
+// It does not test everything just has a single class with a constructor and
+// two methods
+//
+
+class foo {
+
+  int a;
+  int b;
+  int [] c;
+
+  foo()
+  {
+     int a;
+     this.a = 5;
+     c = new int[5];
+  }
+
+  int boo(int a)
+  {
+    b=a;
+    return 1;
+  }
+  int main()
+  {
+    print(a,b);
+    a=read();
+    b=read();
+    print(this.a,this.b);
+    return 0;
+  }
+
+}
+

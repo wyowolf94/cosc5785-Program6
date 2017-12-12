@@ -1,0 +1,43 @@
+// vim: ft=java
+// 
+//This is a another input. Program 5, two classes.
+//
+
+class foo {
+
+  int a;
+  int b;
+
+  foo(int x)
+  {
+     int a;
+     this.a = 5;
+  }
+  int boo(int a)
+  {
+    b=a;
+    return 1;
+  }
+
+}
+
+class goo {
+  int x;
+
+  foo c;
+
+  int main()
+  {
+    foo f;
+
+    if( x > 5) print(x);
+    return 0;
+  }
+  void output(goo a)
+  {
+     print(a.x);
+     return;
+  }
+}
+
+

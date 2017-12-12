@@ -1,0 +1,39 @@
+// vim: ft=java
+// 
+// Prog5, another error file
+// these are syntax errors. 
+//
+
+class foo {
+
+  int a;
+  int b // error, no semicolon
+
+  foo()
+  {
+     int a;
+     this,a = 5; // error comma instead of period 
+  }
+  int boo(int a)
+  {
+    b=a:
+    return 1;
+   // missing brace 
+
+}
+
+class goo {
+  int x;
+
+  foo c; // okay, class is declared
+
+  int main(
+  {
+    foo f; // also okay
+
+    if( x > 5) print(x);
+    return 0;
+  }
+}
+
+

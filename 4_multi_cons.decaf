@@ -1,0 +1,66 @@
+/* vim: ft=java
+ * Another class with multiple constructors. 
+ */
+
+class goo {
+  int a; 
+  int b;
+  int c;
+}
+
+class foo {
+
+  int a;
+  int b;
+
+  foo()
+  {
+     goo a;
+     this.a = 5;// better work
+  }
+
+  foo(int m, int n, goo b)
+  {
+    int a;
+    a= m * m * m;
+    this.a = a;
+    this.b = this.a;
+    return;
+  }
+
+  int boo(int a)
+  {
+    b=a; // not an error
+    return 1;
+  }
+  int main()
+  {
+    print(a,b);
+    a=read();
+    b=read();
+    print(this.a,this.b);
+    return 0;
+  }
+
+}
+
+class ralph
+{
+  int a;
+  goo b;
+  foo c;
+  goo [][] d;
+
+
+  ralph()
+  {
+    d = new goo[10][];
+    d[1]= new goo[5];
+    d[2]= new goo[6];
+
+    c=new foo(1,1,d[0][0]);
+    return;
+  
+  }
+
+}

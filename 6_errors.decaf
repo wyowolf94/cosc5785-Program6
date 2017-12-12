@@ -1,0 +1,32 @@
+// vim: ft=java
+// 
+// Testing for prog5. Some easy errors. 
+//
+
+class foo {
+
+  int a;
+  int b;
+
+  // just a default constructor
+  foo()
+  {
+     foo D; // might work
+     goo G; // this should be an error, class is not declared yet
+     c = 10; // no such variable
+     a = 5;
+     b=10;
+     return 1; // this should be an error, no optional expression for
+	       // constructors. Might not catch this time.
+  }
+
+  int boo(int f)
+  {
+    b=a; //should work, a and b are part of class
+    this.b = this.a * c; // error, 'c' not declared
+    return 1;
+  }
+  
+
+}
+

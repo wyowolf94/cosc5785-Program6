@@ -1,0 +1,47 @@
+/* vim: ft=java
+ * A class with multiple constructors
+ */
+
+class M {
+  int a;
+  int b;
+  
+  M() {
+    print(1);
+  }
+
+  M(int a, int b) {
+    print(2);
+    this.a = a;
+    this.b =b;
+    }
+
+  int foo(int c) {
+    print(3);
+
+    if(c > 5) {
+      a = c; // a from "this"
+    }
+    else b=c; // b from "this"
+    return 9;
+  }
+} 
+
+/*
+ * Another class that declares variable of the previous type
+ */
+
+class N {
+  M c_m; // variable of type M, the previous class
+
+  N() {
+   print(10);
+   }
+
+  int boo()
+  {
+    c_m=new M(4,5); // Should valiadate the constructor
+    c_m.foo(10); //calls a method of that class, have to validate
+    return 1;
+  }
+}
