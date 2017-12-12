@@ -86,6 +86,10 @@ class Node
     virtual int getNum() {
       return -1;
     }
+ 
+    virtual string getFuncName() {
+      return "";
+    }
 
     // Reset
     void reset() {
@@ -988,9 +992,14 @@ class statementNode : public Node
       } else if(type == "nameeq") {
         // <Statement> -> <Name> = <Expression> ;
         string name = children[0]->typeCheckStr(parentTable);
-        
+        string nameid = children[0]->getFuncName();
         if(name == INVALIDSYM){
           //cerr << "Type Error: Unrecognized identifier at " << lnum << endl;
+          return false;
+        }
+        //cout << nameid << endl;
+        if(nameid == "this") {
+          cerr << "Type Error: 'this' is immutable at " << lnum << endl;
           return false;
         }
         string expression = children[1]->typeCheckStr(parentTable);

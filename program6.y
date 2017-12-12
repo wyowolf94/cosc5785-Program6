@@ -811,7 +811,7 @@ explist : exp
         ;
   
 name : THIS  
-         {$$ = new nameNode("this", "");
+         {$$ = new nameNode("this", "this");
           $$->setlnum($1->lNum);
           delete $1;}
      | IDEN 
