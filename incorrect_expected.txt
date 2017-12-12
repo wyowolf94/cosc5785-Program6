@@ -1,0 +1,60 @@
+Type Error: Class one declared multiple times at 22
+Type Error: Duplicate Variable at 43
+Type Error: Duplicate Variable at 44
+Type Error: Redeclared Variable at 116
+Type Error: Redeclared Variable at 127
+Type Error: Variable var1 redeclared at 146
+Type Error: Variable var1 redeclared at 154
+Type Error: Variable var1 redeclared at 155
+Type Error: Main can only return 'void' or 'int', not one at 9
+Type Error: Main called with paramaters at 9
+Type Error: Invalid call to main at 17
+Type Error: Main declared multiple times at 28
+Type Error: Invalid call to main at 33
+Type Error: Invalid Type zero at 40
+Type Error: Invalid Constructor Name method1 at 47
+Type Error: Type Mismatch zero != int at 51
+Type Error: Invalid return for constructor at 60
+Type Error: Invalid Constructor Name five at 64
+Type Error: Method can't be named the same as the class at 73
+Type Error: Invalid return type at 80
+Type Error: Type Mismatch int != two at 100
+Type Error: Invalid identifier var3 at 103
+Type Error: Invalid return type at 103
+Type Error: Invalid return type at 108
+Type Error: Invalid Parameter Type zero at 121
+Type Error: Invalid Parameter Type zero at 132
+Type Error: Invalid Local Var Type zero at 144
+Type Error: Invalid Local Var Type zero at 151
+Type Error: Type Mismatch seven != int at 162
+Type Error: Type Mismatch int != eight at 176
+Type Error: Invalid Identifier var2 for class eight at 179
+Type Error: Invalid Method method3 for class nine at 182
+Type Error: Invalid identifier var3 at 185
+Type Error: Unrecognized identifier at 185
+Type Error: Invalid identifier var8 at 197
+Type Error: Type Mismatch int[][][] != int[][][][] at 203
+Type Error: Invalid return type at 205
+Type Error: Invalid return type at 212
+Type Error: Invalid Method method2 for class nine at 230
+Type Error: Variable of type nine not allowed in print at 233
+Type Error: Invalid identifier f at 238
+Type Error: Invalid Method ten for class ten at 247
+Type Error: Invalid Bool Expression (type mismatch) at 254
+Type Error: Expression must resolve to a 1 or 0 at 254
+Type Error: Invalid Bool Expression (int to null) at 258
+Type Error: Expression must resolve to a 1 or 0 at 258
+Type Error: Type Mismatch at 264
+Type Error: + only takes integer arguments  at 264
+Type Error: + only takes integer arguments  at 265
+Type Error: Type Mismatch at 266
+Type Error: % only takes integer arguments  at 266
+Type Error: Type Mismatch at 267
+Type Error: * only takes integer arguments  at 267
+Type Error: && only takes integer arguments  at 273
+Type Error: Expression must resolve to a 1 or 0 at 273
+Type Error: Only one empty bracket allowed in new expression at 291
+Type Error: Type Mismatch int[][][][] != int[][][] at 294
+Type Error: No matching constructor in eleven at 305
+Type Error: No matching constructor in eleven at 308
+Type Error: Invalid expression (does not evaluate to [int]) at 313
