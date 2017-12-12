@@ -20,7 +20,7 @@ using std::endl;
 // externs defined in program3.cpp 
 extern vector<Node*> forest;
 extern yyFlexLexer myScanner;
-
+int nameCalls = 0;
 // Make C++ scanner play nice with C parser
 #define yylex() myScanner.yylex()
 
@@ -817,6 +817,7 @@ name : THIS
      | IDEN 
          {$$ = new nameNode("id", $1->value);
           $$->setlnum($1->lNum);
+          nameCalls = 0;
           delete $1;}
      | name DOT IDEN 
          {$$ = new nameNode("dotid", $3->value);
@@ -825,7 +826,8 @@ name : THIS
           delete $2;
           delete $3;} 
      | name LBRACK exp RBRACK 
-         {$$ = new nameNode("exp", "");
+         {nameCalls++;
+          $$ = new nameNode("exp", "", nameCalls);
           $$->setlnum($1->getlnum());
           $$->addChild($1);
           $$->addChild($3);

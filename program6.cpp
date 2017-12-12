@@ -24,6 +24,7 @@ attributes *atts;
 yyFlexLexer myScanner;
 vector<Node*> forest;
 int Node::maindec = 0;
+int Node::nameCalls = 0;
 //bool Node::flagMain = false;
 
 int main() { 

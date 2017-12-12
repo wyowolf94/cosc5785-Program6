@@ -22,7 +22,8 @@ using std::cerr;
 class Node 
 {
   public:
-    static int maindec;  
+    static int maindec;
+    static int nameCalls;  
     //static bool flagMain;  
     vector<Node*> children;
   
@@ -997,7 +998,6 @@ class statementNode : public Node
           //cerr << "Type Error: Unrecognized identifier at " << lnum << endl;
           return false;
         }
-        //cout << nameid << endl;
         if(nameid == "this") {
           cerr << "Type Error: 'this' is immutable at " << lnum << endl;
           return false;
@@ -1803,7 +1803,13 @@ class nameNode : public Node
       type = t;
       id = i;
     } 
-    
+   
+    nameNode(string t, string i, int n) : Node() {
+      type = t;
+      id = i;
+      calls = n;
+    }
+ 
     string getFuncName(){
       return id;
     }
@@ -1939,14 +1945,17 @@ class nameNode : public Node
     string typeCheckStr(SymbolTable* parent) {
       // return the type of name
       if(type == "this") {
+        nameCalls = 0;
         return parent->getEnclosingClass(parent);
       } else if(type == "id") {
         // Check that the identifier exists
         // Return the type of the identifier
+        nameCalls = 0;
         Variable* tempVar = new Variable{"", id, "null", true};
         string nameCheck = parent->lookup_ancestors(tempVar);
         //cout << nameCheck << " " << lnum << endl;
-      
+        //cout << id << "- " << lnum << endl;
+        //cout << calls << "- " << lnum << endl;
         if(nameCheck == INVALIDSYM) {
           cerr << "Type Error: Invalid identifier " << id << " at " << lnum << endl;
         }
@@ -1985,12 +1994,10 @@ class nameNode : public Node
         string name = children[0]->typeCheckStr(parent);
         string exp = children[1]->typeCheckStr(parent);
        
-        //size_t n = count(name.begin(), name.end(), '[');
-        //int cs [2] = {static_cast<int>(n), 1};
-        //int* counts = getCallCount(cs, this);
-        
-        //cout << lnum << " - " << counts[0] << ", " << counts[1] << endl;
-      
+        size_t n = count(name.begin(), name.end(), '[');
+
+        nameCalls = nameCalls + n - calls; 
+        //cout << lnum << ":" << n << " " << calls << "="<< nameCalls << endl;       
         string enclClass = parent->getEnclosingClass(parent);
         if(name == enclClass) {
           cerr << "Type Error: 'this' is not an array type at " 
@@ -2034,6 +2041,7 @@ class nameNode : public Node
   private:
     string type;
     string id;
+    int calls;
 }; 
 
 // Type node where t defines either a simpleType or a 
