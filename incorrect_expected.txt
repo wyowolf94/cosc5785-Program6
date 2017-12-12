@@ -40,7 +40,7 @@ Type Error: Invalid Method method2 for class nine at 230
 Type Error: Variable of type nine not allowed in print at 233
 Type Error: Invalid identifier f at 238
 Type Error: Invalid Method ten for class ten at 247
-Type Error: Invalid Bool Expression (type mismatch) at 254
+Type Error: Invalid arguments for == at 254
 Type Error: Expression must resolve to a 1 or 0 at 254
 Type Error: Invalid Bool Expression (int to null) at 258
 Type Error: Expression must resolve to a 1 or 0 at 258
