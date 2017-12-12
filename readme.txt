@@ -1,6 +1,9 @@
 Readme.txt
 Shaya Wolf
 
+----> Check arrays - I know it's wrong
+----> Puts main in the table -> Justify this
+
  - I allow a var and a method to have the same name but methods can't
    be overloaded unless they have different parameters
  - The var names print backwards because it wasn't worth making a 

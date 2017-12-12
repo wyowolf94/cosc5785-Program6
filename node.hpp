@@ -22,7 +22,8 @@ using std::cerr;
 class Node 
 {
   public:
-    static int maindec;    
+    static int maindec;  
+    //static bool flagMain;  
     vector<Node*> children;
   
     // Constructor
@@ -80,6 +81,10 @@ class Node
     virtual vector<Variable*> getParams() {
       vector<Variable*> no;
       return no;
+    }
+
+    virtual int getNum() {
+      return -1;
     }
 
     // Reset
@@ -580,6 +585,7 @@ class methoddecNode : public Node
     methoddecNode(string t, string i) : Node () {
       type = t;
       id = i;
+     // flagMain = false;
     } 
    
     void buildTable(SymbolTable* parent) {
@@ -589,7 +595,11 @@ class methoddecNode : public Node
       } else if (id == "main") {
         cerr << "Type Error: Main declared multiple times at " << lnum  << endl;
         //return;
-      }*/
+      }*/ 
+      //if(!checkMain()) {
+      //  return;
+      //}
+
       MethodDec* new_method = new MethodDec(parent, id);
       vector<Variable*> params;
       if(type == "type") {
@@ -726,23 +736,30 @@ class methoddecNode : public Node
         int numParams = params.size(); 
         
         if(rtype != "void" && rtype != "int") {
-          cerr << "Type Error: Main can only return 'void' or 'int', not " 
-               << rtype << " at " << lnum << endl;
+          //if(print){
+            cerr << "Type Error: Main can only return 'void' or 'int', not " 
+                 << rtype << " at " << lnum << endl;
+          //}
           correct = false;
         } 
         
         if(numParams != 0) {
-          cerr << "Type Error: Main called with paramaters at " << lnum << endl;
+          //if(print){
+            cerr << "Type Error: Main called with paramaters at " << lnum << endl;
+          //}
           correct = false;
         }
 
         if(correct) {
+          //flagMain = true;
           maindec = 1;
         } //else {
           //return correct;
         //}
       } else  if (id == "main") {
-        cerr << "Type Error: Main declared multiple times at " << lnum << endl;
+        //if(print){
+          cerr << "Type Error: Main declared multiple times at " << lnum << endl;
+        //}
         //return false;
         correct = false;
       }
@@ -771,6 +788,8 @@ class methoddecNode : public Node
  
     bool typeCheck() {
       bool cm = checkMain();
+      //if(flagMain) {return false;} 
+      //bool cm = true;
       bool cp = checkParameters();
       bool cr = checkReturnType();
       bool cn = checkName();
@@ -1022,10 +1041,17 @@ class statementNode : public Node
         return (name != INVALIDSYM);
       } else if(type == "printarglist") {
         // <Statement> -> print ( <ArgList> ) ;
-        if(children[1] != 0 && children.size() > 0){
-          for(unsigned int i = 0; i < children[1]->children.size(); i++) {
-            string paramType = children[1]->children[i]->typeCheckStr(parentTable);
+        if(children[0] != 0 && children.size() > 0 
+                            && children[0]->children.size() > 0){ 
+          for(unsigned int i = 0; i < children[0]->children[0]->children.size(); i++) {
+            string paramType 
+              = children[0]->children[0]->children[i]->typeCheckStr(parentTable);
             if(paramType == INVALIDSYM){
+              return false;
+            }
+            if(paramType != "int") {
+              cerr << "Type Error: Variable of type " << paramType 
+                   << " not allowed in print at " << lnum << endl;
               return false;
             }
           }
@@ -1039,7 +1065,7 @@ class statementNode : public Node
         string expression = children[0]->typeCheckStr(parentTable);
         bool t = true;
         if(expression != "int"){
-          cerr << "Type Error: Invalid bool expression at " << lnum << endl;
+          cerr << "Type Error: Expression must resolve to a 1 or 0 at " << lnum << endl;
           t = false;
         }
         return children[1]->typeCheck() && t;
@@ -1115,7 +1141,7 @@ class condstatementNode : public Node
         string exp = children[0]->typeCheckStr(parentTable);
         bool t = true;
         if(exp != "int"){
-          cerr << "Type Error: Invalid bool expression at " << lnum << endl;
+          cerr << "Type Error: Expression must resolve to a 1 or 0 at " << lnum << endl;
           t = false;
         }
         bool stmt = children[1]->typeCheck();
@@ -1124,7 +1150,7 @@ class condstatementNode : public Node
         string exp = children[0]->typeCheckStr(parentTable);
         bool t = true;
         if(exp != "int"){
-          cerr << "Type Error: Invalid bool expression at " << lnum << endl;
+          cerr << "Type Error: Expression must resolve to a 1 or 0 at " << lnum << endl;
           t = false;
         }
         bool stmt1 = children[1]->typeCheck();
@@ -1394,42 +1420,76 @@ class expNode : public Node
   public:
     expNode(string t) : Node () {
       expType = t;
-      num = 0;
+      num = -1;
     } 
     
     expNode(string t, string n) : Node () {
       expType = t;
       num = atoi(n.c_str());
     }
+
+    int getNum() { return num; }
     
     string typeCheckStr(SymbolTable* parent) {
       if(expType == "relop") {
         // <Expression> -> <Expression> Relop <Expression>
         string e1 = children[0]->typeCheckStr(parent);
         string e2 = children[2]->typeCheckStr(parent);
+        //cout << "!!! (" << e1 << ", " << e2 << ")" << endl;
         if(e1 == INVALIDSYM || e2 == INVALIDSYM) {
-          cerr << "Type Error: Invalid Bool Expression at " << lnum << endl;
+          cerr << "Type Error: Invalid Bool Expression (invalid args) at " << lnum << endl;
           return INVALIDSYM;
         }
         if((e1 == "int" && e2 == "null") ||(e1 == "null" && e2 == "int")) {
-          cerr << "Type Error: Invalid Bool Expression at " << lnum << endl;
+          cerr << "Type Error: Invalid Bool Expression (int to null) at " << lnum << endl;
           return INVALIDSYM;
         }
         if(e1 == e2 || e1 == "null" || e2 == "null") {
+          //cout << "--> int" << endl;
           return "int";
         }
-        cerr << "Type Error: Invalid Bool Expression at " << lnum << endl;
+        cerr << "Type Error: Invalid Bool Expression (type mismatch) at " << lnum << endl;
         return INVALIDSYM;
       } else if (expType == "sumop" || expType == "proop") {
         // <Expression> -> <Expression> Sumop/Proop <Expression>
         string e1 = children[0]->typeCheckStr(parent);
         string e2 = children[2]->typeCheckStr(parent);
         if(e1 == INVALIDSYM || e2 == INVALIDSYM) {
-          cerr << "Type Error: Invalid Expression at " << lnum << endl;
+          //cerr << "***Type Error: Invalid Expression at " << lnum << endl;
           return INVALIDSYM;
         }
+        bool typeCorrect = true;
         if(e1 != e2) {
           cerr << "Type Error: Type Mismatch at " << lnum << endl;
+          typeCorrect = false;
+        }
+        if(e1 != "int" || e2 != "int") {
+          cerr << "Type Error: " << children[1]->getType() 
+               << " only takes integer arguments "
+               << " at " << lnum << endl; 
+          //cout << "(" << e1 <<  ", " << e2 << ")" << endl;
+          typeCorrect = false;
+        }
+        if(!typeCorrect) {
+          return INVALIDSYM;
+        }
+
+        if(children[0]->getType() != INVALIDSYM && children[2]->getType() != INVALIDSYM) {
+        if(children[1]->getType() == "&&" || children[1]->getType() == "||"){
+          if(children[0]->getNum() != 0 && children[0]->getNum() != 1) {
+            cerr << "Type Error: LHS of " << children[1]->getType() 
+                 << " must be a 0 or 1 at " << lnum << endl;
+            typeCorrect = false;
+          }
+          if(children[2]->getNum() != 0 && children[2]->getNum() != 1) {
+            cerr << "Type Error: RHS of " << children[1]->getType() 
+                 << " must be a 0 or 1 at " << lnum << endl;
+            typeCorrect = false;
+          }
+        }
+        }
+        if(!typeCorrect) {
+          return INVALIDSYM;
         }
         return e1;
       } else if (expType == "unyop") {
@@ -1605,6 +1665,12 @@ class newexpNode : public Node
           }
         }   
         
+        if(children[1]->children.size() > 0 &&  children[2]->children.size() > 1) {
+          cerr << "Type Error: Only one empty bracket allowed in new expression at "
+               << lnum << endl;
+          return INVALIDSYM;
+        }       
+ 
         unsigned int total = children[1]->children.size() + 
                              children[2]->children.size();
         for(unsigned int i = 0; i < total; i++) {
@@ -1940,6 +2006,8 @@ class proopNode : public Node
       type = t;
     } 
 
+    string getType() { return type; }
+
     virtual void printNode(ostream * out = 0) {
       cout << " " << type << " ";
     }
@@ -1955,6 +2023,8 @@ class sumopNode : public Node
     sumopNode(string t) : Node () {
       type = t;
     } 
+
+    string getType() { return type; }
 
     virtual void printNode(ostream * out = 0) {
       cout << " " << type << " ";

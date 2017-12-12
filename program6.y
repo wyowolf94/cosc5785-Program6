@@ -831,6 +831,17 @@ name : THIS
           $$->addChild($3);
           delete $2;
           delete $4;}
+     | name LBRACK RBRACK 
+         {cerr << endl << "Empty brackets in name: line "
+               << $2->lNum << endl << endl;
+          $$ = new errorNode("<Name>");
+          $$->setlnum($1->getlnum());
+          $$->setValid(false);
+          $$->addChild($1);
+          delete $2;
+          delete $3;
+          yyclearin;
+          yyerrok;}
      | name LBRACK exp error
          {cerr << endl << "Missing ']' after name: line " 
                << $2->lNum << endl << endl;

@@ -197,7 +197,7 @@ class nine {
     var2 = var8;
     
     // Type mismatch, Inappropriate index
-    var1 = var3[2][3][];
+    var1 = var3[2][3][1];
     
     // Type mismatch, wrong dimensional array
     var3 = var4;
@@ -218,6 +218,8 @@ class ten {
   nine a;
   eight b;
   int c;
+  nine a1;
+  nine a2;
 
   ten(nine a, eight b, int c) {
     return;
@@ -229,9 +231,11 @@ class ten {
 
     // Wrong types of parameters
     print(a);
+    print();
+    print(c, c, c);
 
     // Undeclared variable in arglist
-    b = method2(c);
+    b = method2(f);
   } 
 
   int method2(int a) {
@@ -258,6 +262,7 @@ class ten {
     while(!a) {
       // Operator types aren't ints
       a = a + b;
+      a = a1 + a2;
       a = a % b;
       a = a * b; 
     }
@@ -265,6 +270,8 @@ class ten {
     // && and || only take a 1 or a 0
     a = 4;
     c = 2;
+    if(a1 && a2) {}
+    if(a && c) {}
     if(a && c || c) {
 
     }

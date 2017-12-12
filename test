@@ -1,9 +1,11 @@
-class one () {
+class one {
   int method1() {
-    var3[][][];
-    var4[][][][];
+    int var;
+    int[][][] var3;
+    //int[][][][] var4;
     
-    var3 = var4[3][2][1][];
+    //var3 = var4[3][2][1][];
+    //var = var3[3][2][];
   }
 
 }

@@ -24,6 +24,7 @@ attributes *atts;
 yyFlexLexer myScanner;
 vector<Node*> forest;
 int Node::maindec = 0;
+//bool Node::flagMain = false;
 
 int main() { 
   // Initialize Attributes Struct
@@ -59,13 +60,19 @@ int main() {
       forest[i]->buildTable(root);
     }
   }
+ 
   
+ 
   // Type Check
   if(forest.size() > 0) {
     for(unsigned int i = 0; i < forest.size(); i++) {
       forest[i]->typeCheck();
       //cout << "Correct: " << correct << endl;
     }
+  }
+
+  if(Node::maindec == 0) {
+    cerr << "Type Error: No valid main declared" << endl;
   }
 
   // Print Symbol Table
