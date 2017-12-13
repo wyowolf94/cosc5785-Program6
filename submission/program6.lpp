@@ -1,0 +1,435 @@
+/*
+* Shaya Wolf
+* cosc5785 - Program 6
+* program6.lpp
+* 12/14/2017
+*/
+%{
+
+#include<string>
+#include<iostream>
+#include<iomanip>
+
+#include"attributes.h"
+#include"node.hpp"
+#include"program6.tab.h"
+
+using namespace std;
+
+int coln = 1;
+int errn = 0;
+
+void yyerror(const char * string) {
+  cerr << "---" << string << "---" << endl;
+  return;
+}
+
+%}
+
+%option outfile="program6_lex.cpp"
+%option noyywrap
+%option yylineno
+
+SLCOMMENT   (\/\/.*[\n])
+NUMBER      [0-9]+
+ERRTERM     [\[\]{}<>!\+\-\*\/%;,()=. \t\n]
+ID          [\_A-Za-z][\_A-Za-z0-9]* 
+NOTERRTERM  [^ \n\t\[\]\{\}!&|=<>\+\-\*\/\%\;\,\(\)]
+
+%x COMMENT INNERERROR WORDERROR
+
+%%
+
+"/*" {
+  //yylval.atts = new struct attributes;
+  //updateAtts(yylineno, coln, yyleng, "COMMENT", "MULTILINE");
+  BEGIN(COMMENT);
+  //return COMM; 
+}
+
+<COMMENT>[^*\n]* {
+  coln += yyleng;
+}
+
+<COMMENT>"*"+[^*/\n]* {
+  coln += yyleng; 
+} 
+
+<COMMENT>\n {
+  coln = 1; 
+}
+
+<COMMENT>"*"+"/" {
+  coln += yyleng;
+  BEGIN(INITIAL); 
+}
+
+{SLCOMMENT} {
+  //yylval.atts = new struct attributes;
+  //updateAtts(yylineno, coln, yyleng, "COMMENT", yytext);
+  coln = 1; 
+  //return COMM; 
+}
+
+"int" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return INT; 
+}
+
+"void" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return VOID; 
+}
+
+"class" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return CLASS; 
+}
+
+"new" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return NEW; 
+}
+
+"null" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return NLL; 
+}
+
+"print" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return PRINT; 
+}
+
+"read" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return READ; 
+}
+
+"return" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return RETURN; 
+}
+
+"while" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return WHILE; 
+}
+
+"if" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return IF; 
+}
+
+"else" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return ELSE; 
+}
+
+"this" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln+= yyleng;
+  return THIS; 
+}
+
+"==" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "R-OP", yytext);
+  coln += yyleng; 
+  return DEQ; 
+}
+
+"!=" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "R-OP", yytext);
+  coln += yyleng; 
+  return NEQ; 
+}
+
+"<=" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "R-OP", yytext);
+  coln += yyleng; 
+  return LEQ; 
+}
+
+">=" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "R-OP", yytext);
+  coln += yyleng; 
+  return GEQ; 
+}
+
+"<" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "R-OP", yytext);
+  coln += yyleng; 
+  return LT; 
+}
+
+">" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "R-OP", yytext);
+  coln += yyleng; 
+  return GT; 
+}
+
+"+" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "S-OP", yytext);
+  coln += yyleng; 
+  return PLUS; 
+}
+
+"-"  {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "S-OP", yytext);
+  coln += yyleng; 
+  return MINUS; 
+}
+
+"||"  {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "S-OP", yytext);
+  coln += yyleng; 
+  return OR; 
+}
+
+"*" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "P-OP", yytext);
+  coln += yyleng; 
+  return MULT; 
+}
+
+"/" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "P-OP", yytext);
+  coln += yyleng; 
+  return DIVD; 
+}
+
+"%" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "P-OP", yytext);
+  coln += yyleng; 
+  return MOD; 
+}
+
+"&&" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "P-OP", yytext);
+  coln += yyleng; 
+  return AND; 
+}
+
+"!" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "U-OP", yytext);
+  coln += yyleng; 
+  return BANG; 
+} 
+
+"[]" {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln += yyleng;
+  return DOUBBRACK;
+}
+
+"[" { 
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln += yyleng;
+  return LBRACK; 
+}
+
+"]" { 
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln += yyleng;
+  return RBRACK; 
+}
+
+"{" { 
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln += yyleng;
+  return LBRACE; 
+}
+  
+"}" { 
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln += yyleng;
+  return RBRACE; 
+}
+
+";" { 
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln += yyleng;
+  return SEMI; 
+}
+
+"," { 
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln += yyleng;
+  return COMMA; 
+}
+
+"(" { 
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln += yyleng;
+  return LPAREN; 
+}
+
+")" { 
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln += yyleng;
+  return RPAREN; 
+}
+
+"=" { 
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln += yyleng;
+  return EQ; 
+}
+
+"." { 
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, yytext, "");
+  coln += yyleng;
+  return DOT; 
+}
+
+
+{ID} {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "ID", yytext);
+  coln+= yyleng;
+  return IDEN; 
+}
+
+{NUMBER} {
+  yylval.atts = new struct attributes;
+  updateAtts(yylineno, coln, yyleng, "NUMBER", yytext);
+  coln+= yyleng;
+  return NUM; 
+}
+
+[ ]+ {
+  //updateAtts(yylineno, coln, yyleng, "SPACE", "");
+  coln+= yyleng;
+  //return WSPC; 
+}
+
+[\n]+ {
+  //updateAtts(yylineno, coln, yyleng, "NEWLINE", "");
+  coln = 1;
+  //return WSPC; 
+}
+
+[\t]+ {
+  //updateAtts(yylineno, coln, yyleng, "WSPACE", "");
+  coln+= yyleng;
+  //return WSPC; 
+}
+
+. {
+  errn++;
+  yyless(0);
+  BEGIN(WORDERROR);
+  if(errn > 20) {
+    //return MAXERR;
+  }
+}
+
+<WORDERROR>{NOTERRTERM}* {
+  yymore();
+  BEGIN(INNERERROR); 
+} 
+
+<WORDERROR>[ \n\t\[\]\{\}!=<>\+\-\*\/\%\;\,\(\)] {
+  yyless(yyleng-1);
+  //updateAtts(yylineno, coln, yyleng, yytext, "WORD ERROR");
+  cout << "Lex [WORD] Error (Line: " << yylineno 
+       << ", Col: " << coln << "): " << yytext << endl << endl;
+  coln += yyleng;
+  BEGIN(INITIAL);
+  //return WRDERR; 
+}
+
+<WORDERROR><<EOF>> {
+  yyless(yyleng-1);
+  //updateAtts(yylineno, coln, yyleng, yytext, "WORD ERROR");
+  cout << "Lex [WORD] Error (Line: " << yylineno 
+       << ", Col: " << coln << "): " << yytext << endl << endl;
+  coln += yyleng;
+  BEGIN(INITIAL);
+  //return WRDERR; 
+}
+
+<WORDERROR>[&|] {
+  yymore(); 
+}
+
+<INNERERROR>"&&"|"||" {
+  yyless(yyleng-2);
+  //updateAtts(yylineno, coln, yyleng, yytext, "WORD ERROR");
+  cout << "Lex [WORD] Error (Line: " << yylineno 
+       << ", Col: " << coln << "): " << yytext << endl << endl;
+  coln += yyleng;
+  BEGIN(INITIAL);
+  //return WRDERR; 
+}
+
+<INNERERROR>{ERRTERM} {
+  yyless(yyleng-1);
+  if(yyleng == 1) {
+    //updateAtts(yylineno, coln, yyleng, yytext, "CHAR ERROR");
+    cout << "Lex [CHAR] Error (Line: " << yylineno 
+         << ", Col: " << coln << "): " << yytext << endl << endl;
+  } else { 
+    //updateAtts(yylineno, coln, yyleng, yytext, "WORD ERROR");
+    cout << "Lex [WORD] Error (Line: " << yylineno 
+         << ", Col: " << coln << "): " << yytext << endl << endl;
+  }
+  coln += yyleng;
+  BEGIN(INITIAL);
+  //return WRDERR; 
+}
+
+<INNERERROR>. {
+  yymore();
+  BEGIN(WORDERROR); 
+}
+
+%%

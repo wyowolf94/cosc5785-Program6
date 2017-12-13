@@ -25,12 +25,12 @@ class ClassA
   ClassA(int var1, int var1){} //error var1 declared twice
   
   /*Main() tests*/
-  void main(){} //comment out this line for error no main
+ // void main(){} //comment out this line for error no main
   
   ClassA main(){}//error main must return int or void
   int main(int myvar1){}//error main takes 0 params
   ClassA main(ClassA myvar){} //Error return type or param
-  int main(){}//error redeclaration of main
+ // int main(){}//error redeclaration of main
   
   void method1()
   {
